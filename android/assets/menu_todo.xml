@@ -1,0 +1,96 @@
+<data text="menu">
+    <menu text="LED Strip Settings">
+        <LED_Strip_Settings text="LED Color">
+            <LED_Color text="Multicolor">
+                <Multicolor text="Add Color"></Multicolor>
+                <Multicolor text="Confirm"></Multicolor>
+            </LED_Color>
+            <LED_Color text="Rainbow Colors"> <!-- TODO Add send to set this mode (Rainbow_Colors) -->
+                <Rainbow_Colors text="Offset"></Rainbow_Colors>
+                <Rainbow_Colors text="Scale"></Rainbow_Colors>
+                <Rainbow_Colors text="Timeshift"></Rainbow_Colors>
+            </LED_Color>
+            <LED_Color text="Scale Coloring" display="none"> <!-- TODO Not available on Board-->
+                <Scale_Coloring text="Color in scale">
+                    <Color_in_scale text="Red"></Color_in_scale>
+                    <Color_in_scale text="Green"></Color_in_scale>
+                    <Color_in_scale text="Blue"></Color_in_scale>
+                </Scale_Coloring>
+                <Scale_Coloring text="Color not in scale">
+                    <Color_not_in_scale text="Red"></Color_not_in_scale>
+                    <Color_not_in_scale text="Green"></Color_not_in_scale>
+                    <Color_not_in_scale text="Blue"></Color_not_in_scale>
+                </Scale_Coloring>
+                <Scale_Coloring text="Scale key">
+                    <Scale_key text="C"></Scale_key>
+                    <Scale_key text="C#"></Scale_key>
+                    <Scale_key text="D"></Scale_key>
+                    <Scale_key text="Eb"></Scale_key>
+                    <Scale_key text="E"></Scale_key>
+                    <Scale_key text="F"></Scale_key>
+                    <Scale_key text="F#"></Scale_key>
+                    <Scale_key text="G"></Scale_key>
+                    <Scale_key text="Ab"></Scale_key>
+                    <Scale_key text="A"></Scale_key>
+                    <Scale_key text="Bb"></Scale_key>
+                    <Scale_key text="B"></Scale_key>
+                </Scale_Coloring>
+                <Scale_Coloring text="Confirm"></Scale_Coloring>
+            </LED_Color>
+        </LED_Strip_Settings>
+        <LED_Strip_Settings text="Sides Color">
+            <Sides_Color text="Custom RGB"> <!-- TODO implement py and test -->
+                <Custom_RGB text="Red"></Custom_RGB>
+                <Custom_RGB text="Green"></Custom_RGB>
+                <Custom_RGB text="Blue"></Custom_RGB>
+            </Sides_Color>
+            <Sides_Color text="Same as main"></Sides_Color>
+            <Sides_Color text="Off"></Sides_Color>
+        </LED_Strip_Settings>
+        <LED_Strip_Settings text="Sequences">
+            <Sequences text="Update"></Sequences>
+        </LED_Strip_Settings>
+        <LED_Strip_Settings text="Skipped notes"> <!-- TODO Test required -->
+            <Skipped_notes text="None"></Skipped_notes>
+            <Skipped_notes text="Finger-based"></Skipped_notes>
+            <Skipped_notes text="Normal"></Skipped_notes>
+        </LED_Strip_Settings>
+        <LED_Strip_Settings text="Led count">
+            <Led_count text="Number"></Led_count>
+        </LED_Strip_Settings>
+        <LED_Strip_Settings text="Shift">
+            <Shift text="Number"></Shift>
+        </LED_Strip_Settings>
+    </menu>
+    <menu text="Play MIDI">
+        <Play_MIDI text="Choose song"></Play_MIDI> <!-- TODO Select List -->
+    </menu>
+    <menu text="Ports Settings">
+        <Ports_Settings text="Input"></Ports_Settings> <!-- TODO Select List -->
+        <Ports_Settings text="Playback"></Ports_Settings> <!-- TODO Select List -->
+    </menu>
+    <menu text="Other Settings"> <!-- TODO Not important -->
+        <Other_Settings text="System Info"></Other_Settings>
+        <Other_Settings text="Screensaver">
+            <Screensaver text="Content">
+                <Content text="Time"></Content>
+                <Content text="Date"></Content>
+                <Content text="CPU Chart"></Content>
+                <Content text="CPU"></Content>
+                <Content text="RAM"></Content>
+                <Content text="Temp"></Content>
+                <Content text="Network Usage"></Content>
+                <Content text="SD Card Space"></Content>
+            </Screensaver>
+            <Screensaver text="Start delay">
+                <Start_delay text="After minutes (0 - never)"></Start_delay>
+            </Screensaver>
+            <Screensaver text="Turn off screen delay">
+                <Turn_off_screen_delay text="After minutes (0 - never)"></Turn_off_screen_delay>
+            </Screensaver>
+            <Screensaver text="Led animation delay">
+                <Led_animation_delay text="After minutes (0 - never)"></Led_animation_delay>
+            </Screensaver>
+        </Other_Settings>
+    </menu>
+</data>
