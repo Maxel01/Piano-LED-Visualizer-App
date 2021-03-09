@@ -75,7 +75,8 @@ public class Connection implements Disposable {
                 BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 String line = null;
                 while (!receiveThread.isInterrupted() && (line = br.readLine()) != null) {
-                    messages.add(line);
+                    if(!line.isEmpty())
+                        messages.add(line);
                     System.out.println("read something " + line);
                 }
                 disconnect();
@@ -84,6 +85,11 @@ public class Connection implements Disposable {
                 e.printStackTrace();
             }
         };
+    }
+
+    public String getMessage() {
+        if(messages.size() == 0) return null;
+        return messages.remove(0);
     }
 
     public ArrayList<InetAddress> getAddresses() {

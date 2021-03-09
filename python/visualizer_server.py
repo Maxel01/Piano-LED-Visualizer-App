@@ -3,6 +3,8 @@ import selectors
 import types
 from threading import Thread
 import time
+import mido
+import os
 
 class VisualizerServer:
 
@@ -15,22 +17,22 @@ class VisualizerServer:
         self.server_socket = None
         self.start_server()
 
-    def execute(self, cmd):
+    def execute(self, cmd, socket):
         if len(str(cmd)) == 0:
             return
         if cmd.find(";") != -1:
             firstCmd = cmd[:cmd.find(";")]
             nextCmd = cmd[cmd.find(";") + 1:]
-            self.execute(firstCmd)
-            self.execute(nextCmd)
+            self.execute(firstCmd, socket)
+            self.execute(nextCmd, socket)
             return
         print(cmd)
-        (action, location, choice) = str(cmd).split(".")
+        (action, location, choice) = str(cmd).split(".", 2)
         if action == "change_settings":
             self.menu.change_settings(location=location, choice=choice)
         elif action == "change_value":
             (key, value) = str(choice).split("=")
-            value = value.replace(",", ".")
+            #value = value.replace(",", ".")
             value = eval(value)
             if location == "RGB":
                 print("key:", key, ", value:", value)
@@ -68,6 +70,20 @@ class VisualizerServer:
             elif location == "Max_notes_in_period":
                 self.ledsettings.speed_max_notes = value
                 self.usersettings.change_setting_value("speed_max_notes", value)
+        elif action == "request":
+            if location == "Ports_Settings":
+                if choice == "Input" or choice == "Playback":
+                    ports = mido.get_input_names()
+                    message = location + "." + choice + "." + str(ports)
+                    print(message)
+                    socket.send(message.encode() + b"\n\r")
+            elif location == "Play_MIDI":
+                if choice == "Choose song":
+                    songs_list = os.listdir("Songs")
+                    print(songs_list)
+                    message = location + "." + choice + "." + str(songs_list)
+                    print(message)
+                    socket.send(message.encode() + b"\n\r")
 
 
     def manipulate_color(self, key, value, attribute_holder):
@@ -94,16 +110,17 @@ class VisualizerServer:
             recv_data = sock.recv(1024)  # Should be ready to read
             if recv_data:
                 data.outb += recv_data
-                self.execute(recv_data.decode(encoding='UTF-8'))
+                self.execute(recv_data.decode(encoding='UTF-8'), sock)
             else:
                 print('closing connection to', data.addr)
                 self.selector.unregister(sock)
                 sock.close()
         if mask & selectors.EVENT_WRITE:
             if data.outb:
-                print('echoing', repr(data.outb), 'to', data.addr)
-                sent = sock.send(data.outb + b"\n\r")  # Should be ready to write
-                data.outb = data.outb[sent:]
+                #print('echoing', repr(data.outb), 'to', data.addr)
+                #sent = sock.send(data.outb + b"\n\r")  # Should be ready to write
+                #data.outb = data.outb[sent:]
+                pass
 
     def start_server_thread(self):
         host = '0.0.0.0'  # Standard loopback interface address (localhost)

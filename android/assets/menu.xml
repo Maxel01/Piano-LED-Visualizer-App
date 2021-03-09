@@ -23,11 +23,11 @@
                 <Solid text="DarkGreen"></Solid>
                 <Solid text="DeepPink"></Solid>
             </LED_Color>
-            <LED_Color text="Multicolor">
+            <LED_Color text="Multicolor" disabled="true">
                 <Multicolor text="Add Color"></Multicolor>
                 <Multicolor text="Confirm"></Multicolor>
             </LED_Color>
-            <LED_Color text="Rainbow Colors">
+            <LED_Color text="Rainbow Colors" disabled="true">
                 <Rainbow_Colors text="Offset"></Rainbow_Colors>
                 <Rainbow_Colors text="Scale"></Rainbow_Colors>
                 <Rainbow_Colors text="Timeshift"></Rainbow_Colors>
@@ -118,31 +118,31 @@
             <Sides_Color text="Same as main"></Sides_Color>
             <Sides_Color text="Off"></Sides_Color>
         </LED_Strip_Settings>
-        <LED_Strip_Settings text="Sequences">
+        <LED_Strip_Settings text="Sequences" disabled="true">
             <Sequences text="Update"></Sequences>
         </LED_Strip_Settings>
-        <LED_Strip_Settings text="Skipped notes">
+        <LED_Strip_Settings text="Skipped notes" disabled="true">
             <Skipped_notes text="None"></Skipped_notes>
             <Skipped_notes text="Finger-based"></Skipped_notes>
             <Skipped_notes text="Normal"></Skipped_notes>
         </LED_Strip_Settings>
-        <LED_Strip_Settings text="Led count">
+        <LED_Strip_Settings text="Led count" disabled="true">
             <Led_count text="Number"></Led_count>
         </LED_Strip_Settings>
-        <LED_Strip_Settings text="Shift">
+        <LED_Strip_Settings text="Shift" disabled="true">
             <Shift text="Number"></Shift>
         </LED_Strip_Settings>
     </menu>
     <menu text="Play MIDI">
-        <Play_MIDI text="Choose song"></Play_MIDI>
+        <Play_MIDI text="Choose song" action="request"></Play_MIDI>
         <Play_MIDI text="Stop playing"></Play_MIDI>
         <Play_MIDI text="Start recording"></Play_MIDI>
         <Play_MIDI text="Cancel recording"></Play_MIDI>
         <Play_MIDI text="Save MIDI"></Play_MIDI>
     </menu>
     <menu text="Ports Settings">
-        <Ports_Settings text="Input"></Ports_Settings>
-        <Ports_Settings text="Playback"></Ports_Settings>
+        <Ports_Settings text="Input" action="request"></Ports_Settings>
+        <Ports_Settings text="Playback" action="request"></Ports_Settings>
         <Ports_Settings text="Refresh ports"></Ports_Settings>
         <Ports_Settings text="Reset Bluetooth service"></Ports_Settings>
     </menu>
@@ -194,8 +194,8 @@
         </Display_Settings>
     </menu>
     <menu text="Other Settings">
-        <Other_Settings text="System Info"></Other_Settings>
-        <Other_Settings text="Screensaver" display="none"> <!-- TODO Not yet available in App-->
+        <Other_Settings text="System Info" disabled="true"></Other_Settings>
+        <Other_Settings text="Screensaver" disabled="true"> <!-- TODO Not yet available in App-->
             <Screensaver text="Content">
                 <Content text="Time"></Content>
                 <Content text="Date"></Content>
@@ -206,13 +206,13 @@
                 <Content text="Network Usage"></Content>
                 <Content text="SD Card Space"></Content>
             </Screensaver>
-            <Screensaver text="Start delay" display="none"> <!-- TODO Not yet available in App-->
+            <Screensaver text="Start delay" disabled="true"> <!-- TODO Not yet available in App-->
                 <Start_delay text="After minutes (0 - never)"></Start_delay>
             </Screensaver>
-            <Screensaver text="Turn off screen delay" display="none"> <!-- TODO Not yet available in App-->
+            <Screensaver text="Turn off screen delay" disabled="true"> <!-- TODO Not yet available in App-->
                 <Turn_off_screen_delay text="After minutes (0 - never)"></Turn_off_screen_delay>
             </Screensaver>
-            <Screensaver text="Led animation delay" display="none"> <!-- TODO Not yet available in App-->
+            <Screensaver text="Led animation delay" disabled="true"> <!-- TODO Not yet available in App-->
                 <Led_animation_delay text="After minutes (0 - never)"></Led_animation_delay>
             </Screensaver>
             <Screensaver text="Led animation">

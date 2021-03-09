@@ -12,6 +12,7 @@ public class Actions {
 
     public static final String CHANGE_SETTINGS = "change_settings"; // Calls function change_settings
     public static final String CHANGE_VALUE = "change_value"; // individual handling
+    public static final String REQUEST = "request"; // individual handling
 
     Core core;
 
@@ -34,7 +35,7 @@ public class Actions {
     }
 
     public void action(XmlReader.Element element) throws InvocationTargetException, IllegalAccessException {
-        if (element.get("Text", "").equals("Cancel")) {
+        if (element.get("text", "").equals("Cancel")) {
             cancel(element);
             return;
         }
@@ -51,10 +52,15 @@ public class Actions {
     }
 
     public void send(XmlReader.Element element, String option) {
+        send(element, option, true);
+    }
+
+    public void send(XmlReader.Element element, String option, boolean goBack) {
         String data = option + "." + element.getName() + "." + element.get("text");
         System.out.println("Send: " + data);
         core.connection.send(data);
-        core.setScreen(new MainMenuScreen(core, element.getParent().getName()));
+        if (goBack)
+            core.setScreen(new MainMenuScreen(core, element.getParent().getName()));
     }
 
     public void show(XmlReader.Element element) throws InvocationTargetException, IllegalAccessException {
@@ -64,6 +70,7 @@ public class Actions {
 
     public void colorPicker(XmlReader.Element element) {
         StageScreen screen = (StageScreen) core.getScreen();
+        send(element, CHANGE_SETTINGS, false);
         ColorPicker picker = new ColorPicker(element.get("text"), new ColorPickerAdapter() {
             @Override
             public void finished(Color newColor) {
@@ -104,11 +111,17 @@ public class Actions {
     }
 
     public void sendNumber(XmlReader.Element element, float number) {
-        String formattedNumber = (number + "").replace(".", ",");
+        String formattedNumber = (number + "");//.replace(".", ",");
         String oldText = element.get("text");
         element.setAttribute("text", oldText + "=" + formattedNumber);
         String data = CHANGE_VALUE + "." + element.getName() + "." + element.get("text");
         core.connection.send(data); // Do not return to previous menu
         element.setAttribute("text", oldText);
+    }
+
+    public void request(XmlReader.Element element) {
+        String data = REQUEST + "." + element.getName() + "." + element.get("text");
+        System.out.println("Send: " + data);
+        core.connection.send(data);
     }
 }

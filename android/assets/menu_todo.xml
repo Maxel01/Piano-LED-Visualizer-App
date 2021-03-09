@@ -38,16 +38,7 @@
                 <Scale_Coloring text="Confirm"></Scale_Coloring>
             </LED_Color>
         </LED_Strip_Settings>
-        <LED_Strip_Settings text="Sides Color">
-            <Sides_Color text="Custom RGB"> <!-- TODO implement py and test -->
-                <Custom_RGB text="Red"></Custom_RGB>
-                <Custom_RGB text="Green"></Custom_RGB>
-                <Custom_RGB text="Blue"></Custom_RGB>
-            </Sides_Color>
-            <Sides_Color text="Same as main"></Sides_Color>
-            <Sides_Color text="Off"></Sides_Color>
-        </LED_Strip_Settings>
-        <LED_Strip_Settings text="Sequences">
+        <LED_Strip_Settings text="Sequences"> <!-- TODO What is it ? -->
             <Sequences text="Update"></Sequences>
         </LED_Strip_Settings>
         <LED_Strip_Settings text="Skipped notes"> <!-- TODO Test required -->
@@ -64,10 +55,6 @@
     </menu>
     <menu text="Play MIDI">
         <Play_MIDI text="Choose song"></Play_MIDI> <!-- TODO Select List -->
-    </menu>
-    <menu text="Ports Settings">
-        <Ports_Settings text="Input"></Ports_Settings> <!-- TODO Select List -->
-        <Ports_Settings text="Playback"></Ports_Settings> <!-- TODO Select List -->
     </menu>
     <menu text="Other Settings"> <!-- TODO Not important -->
         <Other_Settings text="System Info"></Other_Settings>

@@ -4,6 +4,7 @@ package de.maxiindiestyle.pianoledvisualizer;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -19,14 +20,21 @@ import java.lang.reflect.InvocationTargetException;
 
 public class MainMenuScreen extends StageScreen {
 
+    XmlReader.Element rootElement;
     Array<XmlReader.Element> elements;
     Table table;
+    Messages messages;
 
     public MainMenuScreen(Core core, String rootElementName) {
+        this(core, rootElementName, null);
+    }
+
+    public MainMenuScreen(Core core, String rootElementName, XmlReader.Element element) {
         super(core);
+        messages = new Messages(core);
         System.out.println("root " + rootElementName);
         createRoot();
-        createButtons(rootElementName);
+        createButtons(rootElementName, element);
         createBackButton();
     }
 
@@ -44,12 +52,16 @@ public class MainMenuScreen extends StageScreen {
 
     private Array<XmlReader.Element> readXml(String rootElementName) {
         XmlReader xmlReader = new XmlReader();
-        XmlReader.Element element = xmlReader.parse(Gdx.files.internal("menu.xml"));
-        return element.getChildrenByNameRecursively(rootElementName);
+        rootElement = xmlReader.parse(Gdx.files.internal("menu.xml"));
+        return rootElement.getChildrenByNameRecursively(rootElementName);
     }
 
-    public void createButtons(String rootElementName) {
-        elements = readXml(rootElementName);
+    public void createButtons(String rootElementName, XmlReader.Element rootElement) {
+        if(rootElement == null) {
+            elements = readXml(rootElementName);
+        } else {
+            elements = rootElement.getChildrenByNameRecursively(rootElementName);
+        }
         for (XmlReader.Element element : elements) {
             if(element.get("display", "").equals("none")) continue;
             if(element.get("type", "").equals("number")) {
@@ -60,7 +72,11 @@ public class MainMenuScreen extends StageScreen {
                 continue;
             }
             TextButton button = new TextButton(element.get("text"), skin);
-            button.addListener(onClick(element));
+            if(Boolean.parseBoolean(element.get("disabled", "false"))) {
+                button.setDisabled(true);
+            } else {
+                button.addListener(onClick(element));
+            }
             table.add(button).expandX().fillX().height(50).padBottom(20).row();
         }
     }
@@ -120,12 +136,21 @@ public class MainMenuScreen extends StageScreen {
                 super.touchUp(event, x, y, pointer, button);
                 try {
                     if (element.getChildCount() > 0) {
+                        if(element.hasAttribute("action")) {
+
+                        }
                         if (element.hasAttribute("show")) {
                             core.actions.show(element);
                         } else {
                             core.setScreen(new MainMenuScreen(core, element.getChild(0).getName()));
                         }
                     } else {
+                        String action = element.get("action", "send");
+                        if(action.equals("request")) {
+                            Button textButton = (Button) event.getListenerActor();
+                            textButton.setStyle(skin.get("blue", TextButton.TextButtonStyle.class));
+                            System.out.println(textButton);
+                        }
                         core.actions.action(element);
                     }
                 } catch (InvocationTargetException e) {
@@ -152,6 +177,8 @@ public class MainMenuScreen extends StageScreen {
         super.render(delta);
         if (!connection.isConnected()) {
             core.setScreen(new LoginScreen(core));
+            return;
         }
+        messages.process(rootElement);
     }
 }
