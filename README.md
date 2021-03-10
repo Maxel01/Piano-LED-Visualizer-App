@@ -1,7 +1,7 @@
 # Piano-LED-Visualizer-App
 
 # Setup your Raspi
-Follow the steps under this repository: (https://github.com/onlaj/Piano-LED-Visualizer)
+Follow the steps under this repository: (https://github.com/onlaj/Piano-LED-Visualizer)<br>
 Be sure that your Raspi has an internet connection
 
 # Update your files
