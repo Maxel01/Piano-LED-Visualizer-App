@@ -2,6 +2,7 @@ package de.maxiindiestyle.pianoledvisualizer;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -20,9 +21,11 @@ import java.lang.reflect.InvocationTargetException;
 
 public class MainMenuScreen extends StageScreen {
 
+    String rootElementName;
     XmlReader.Element rootElement;
     Array<XmlReader.Element> elements;
     Table table;
+    ScrollPane scrollPane;
     Messages messages;
 
     public MainMenuScreen(Core core, String rootElementName) {
@@ -33,14 +36,16 @@ public class MainMenuScreen extends StageScreen {
         super(core);
         messages = new Messages(core);
         System.out.println("root " + rootElementName);
+        this.rootElementName = rootElementName;
         createRoot();
         createButtons(rootElementName, element);
         createBackButton();
+        core.actions.request("Settings", "All");
     }
 
     public void createRoot() {
         table = new Table();
-        ScrollPane scrollPane = new ScrollPane(table, skin);
+        scrollPane = new ScrollPane(table, skin);
         scrollPane.setFillParent(true);
         scrollPane.setFadeScrollBars(false);
 
@@ -62,6 +67,7 @@ public class MainMenuScreen extends StageScreen {
         } else {
             elements = rootElement.getChildrenByNameRecursively(rootElementName);
         }
+        int index = 0;
         for (XmlReader.Element element : elements) {
             if(element.get("display", "").equals("none")) continue;
             if(element.get("type", "").equals("number")) {
@@ -72,21 +78,46 @@ public class MainMenuScreen extends StageScreen {
                 continue;
             }
             TextButton button = new TextButton(element.get("text"), skin);
+            if(element.hasAttribute("color")) {
+                if(element.get("color").equals("settings")) {
+                    button = new ColorTextButton(element.get("text"), skin, Settings.getColor(element));
+                } else {
+                    button = new ColorTextButton(element.get("text"), skin, Color.valueOf(element.get("color")));
+                }
+            }
+            if(element.getParent().hasAttribute("setting")) {
+                if(element.getParent().hasAttribute("stype")) {
+                    if(element.getParent().get("stype").equals("index")) {
+                        String settingValue = Settings.get(element.getParent().get("setting"), -1 + "");
+                        int sIndex = Integer.parseInt(settingValue);
+                        if(sIndex == index) {
+                            button.setStyle(skin.get("blue", TextButton.TextButtonStyle.class));
+                        }
+                    } else if(element.getParent().get("stype").equals("sIndex")) {
+                        String settingValue = Settings.get(element.getParent().get("setting"), "");
+                        if(settingValue.equals(element.get("index", "-1"))) {
+                            button.setStyle(skin.get("blue", TextButton.TextButtonStyle.class));
+                        }
+                    }
+                }
+            }
             if(Boolean.parseBoolean(element.get("disabled", "false"))) {
                 button.setDisabled(true);
             } else {
                 button.addListener(onClick(element));
             }
             table.add(button).expandX().fillX().height(50).padBottom(20).row();
+            index++;
         }
     }
 
     private void createNumberPicker(XmlReader.Element element) {
         int min = Integer.parseInt(element.get("min", "0"));
         int max = Integer.parseInt(element.get("max", "100"));
-        int initialValue = Integer.parseInt(element.get("initVal", (int) (min + max / 2) + ""));
+        String initialValue = element.get("initVal", (int) (min + max / 2) + "");
         int step = Integer.parseInt(element.get("step", "1"));
-        final IntSpinnerModel intModel = new IntSpinnerModel(initialValue, min, max, step);
+        initialValue = Settings.get(element.get("setting", "0"), initialValue + "");
+        final IntSpinnerModel intModel = new IntSpinnerModel(Integer.parseInt(initialValue), min, max, step);
         Spinner intSpinner = new Spinner(element.get("text"), intModel);
 
         intSpinner.addListener(new ChangeListener() {
@@ -106,6 +137,7 @@ public class MainMenuScreen extends StageScreen {
         String max = element.get("max", "100");
         String initialValue = element.get("initVal", (Float.parseFloat(min) + Float.parseFloat(max) / 2) + "");
         String step = element.get("step", "0.5");
+        initialValue = Settings.get(element.get("setting", "0"), initialValue);
         final FloatSpinnerModel floatModel = new FloatSpinnerModel(initialValue, min, max, step);
         Spinner floatSpinner = new Spinner(element.get("text"), floatModel);
 
@@ -137,7 +169,9 @@ public class MainMenuScreen extends StageScreen {
                 try {
                     if (element.getChildCount() > 0) {
                         if(element.hasAttribute("action")) {
-
+                            core.actions.action(element);
+                        } else {
+                            core.actions.send(element, Actions.CHANGE_SETTINGS, false);
                         }
                         if (element.hasAttribute("show")) {
                             core.actions.show(element);

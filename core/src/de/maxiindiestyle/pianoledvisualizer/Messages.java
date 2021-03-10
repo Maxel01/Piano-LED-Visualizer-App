@@ -1,9 +1,7 @@
 package de.maxiindiestyle.pianoledvisualizer;
 
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
-import org.w3c.dom.Element;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,42 +17,44 @@ public class Messages {
     public void process(XmlReader.Element element) {
         String message;
         while ((message = core.connection.getMessage()) != null) {
-            System.out.println("process Message: " + message);
+            //System.out.println("process Message: " + message);
             String[] splits = message.split("\\.", 3);
-            System.out.println(Arrays.toString(splits));
             String location = splits[0], choice = splits[1], value = splits[2];
-            if(location.equals("Ports_Settings") || location.equals("Play_MIDI")) {
-                ArrayList<String> values = toStringArray(value);
-                String section = "";
-                if(choice.equals("Input")) {
-                    section = "Input";
-                } else if(choice.equals("Playback")) {
-                    section = "Playback";
-                } else if(choice.equals("Choose song")) {
-                    section = "Choose song";
-                }
-                Array<XmlReader.Element> ports_settings = element.getChildrenByNameRecursively(location);
-                XmlReader.Element input = null;
-                for(XmlReader.Element port : ports_settings) {
-                    if(port.get("text").equals(section))
-                        input = port;
-                }
-                for (int i = 0; i < input.getChildCount(); i++) {
-                    input.removeChild(0);
-                }
-                section = section.replace(" ", "_");
-                for(String newElement : values) {
-                    XmlReader.Element inputElement = new XmlReader.Element(section, input);
-                    inputElement.setAttribute("text", newElement);
-                    input.addChild(inputElement);
-                }
-                XmlReader.Element root = input.getParent();
-                while(root.getParent() != null) {
-                    root = root.getParent();
-                }
-                core.setScreen(new MainMenuScreen(core, section, root));
+            if (location.equals("Ports_Settings") || location.equals("Play_MIDI")) {
+                processSubList(element, location, choice, value);
+            } else if (location.equals("Settings")) {
+                processSettings(choice, value);
             }
         }
+    }
+
+    public void processSubList(XmlReader.Element element, String location, String choice, String value) {
+        ArrayList<String> values = toStringArray(value);
+        String section = choice;
+        Array<XmlReader.Element> locationElements = element.getChildrenByNameRecursively(location);
+        XmlReader.Element sectionElement = null;
+        for (XmlReader.Element childElement : locationElements) {
+            if (childElement.get("text").equals(section))
+                sectionElement = childElement;
+        }
+        for (int i = 0; i < sectionElement.getChildCount(); i++) {
+            sectionElement.removeChild(0);
+        }
+        section = section.replace(" ", "_");
+        for (String newElement : values) {
+            XmlReader.Element newChildElement = new XmlReader.Element(section, sectionElement);
+            newChildElement.setAttribute("text", newElement);
+            sectionElement.addChild(newChildElement);
+        }
+        XmlReader.Element root = sectionElement.getParent();
+        while (root.getParent() != null) {
+            root = root.getParent();
+        }
+        core.setScreen(new MainMenuScreen(core, section, root));
+    }
+
+    public void processSettings(String choice, String value) {
+        Settings.update(choice, value);
     }
 
     private ArrayList<String> toStringArray(String array) {
@@ -62,7 +62,7 @@ public class Messages {
         array = array.substring(1, array.length() - 1);
         System.out.println(array);
         String[] arrayParts = array.split(",");
-        for(String string : arrayParts) {
+        for (String string : arrayParts) {
             strings.add(string.trim().replace("'", ""));
         }
         System.out.println(strings);

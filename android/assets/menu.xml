@@ -1,68 +1,68 @@
 <data text="menu">
     <menu text="LED Strip Settings">
-        <LED_Strip_Settings text="LED Color">
-            <LED_Color text="RGB" show="colorPicker">
-                <RGB text="Red"></RGB>
-                <RGB text="Green"></RGB>
-                <RGB text="Blue"></RGB>
+        <LED_Strip_Settings text="LED Color" setting="color_mode" stype="sIndex">
+            <LED_Color text="RGB" show="colorPicker" color="settings" index="Single">
+                <RGB text="Red" setting="red"></RGB>
+                <RGB text="Green" setting="green"></RGB>
+                <RGB text="Blue" setting="blue"></RGB>
             </LED_Color>
-            <LED_Color text="Solid">
-                <Solid text="White"></Solid>
-                <Solid text="Red"></Solid>
-                <Solid text="Green"></Solid>
-                <Solid text="Blue"></Solid>
-                <Solid text="Aqua"></Solid>
-                <Solid text="Crimson"></Solid>
-                <Solid text="Cyan"></Solid>
-                <Solid text="Fuchsia"></Solid>
-                <Solid text="Lime"></Solid>
-                <Solid text="Olive"></Solid>
-                <Solid text="Purple"></Solid>
-                <Solid text="Yellow"></Solid>
-                <Solid text="Orange"></Solid>
-                <Solid text="DarkGreen"></Solid>
-                <Solid text="DeepPink"></Solid>
+            <LED_Color text="Solid" index="Single">
+                <Solid text="White" color="ffffffff"></Solid>
+                <Solid text="Red" color="ff0000ff"></Solid>
+                <Solid text="Green" color="008000ff"></Solid>
+                <Solid text="Blue" color="0000ffff"></Solid>
+                <Solid text="Aqua" color="00ffffff"></Solid>
+                <Solid text="Crimson" color="dc143cff"></Solid>
+                <Solid text="Cyan" color="00ffffff"></Solid>
+                <Solid text="Fuchsia" color="ff00ffff"></Solid>
+                <Solid text="Lime" color="00ff00ff"></Solid>
+                <Solid text="Olive" color="808000ff"></Solid>
+                <Solid text="Purple" color="800080ff"></Solid>
+                <Solid text="Yellow" color="ffff00ff"></Solid>
+                <Solid text="Orange" color="ffa500ff"></Solid>
+                <Solid text="DarkGreen" color="006400ff"></Solid>
+                <Solid text="DeepPink" color="ff1493ff"></Solid>
             </LED_Color>
             <LED_Color text="Multicolor" disabled="true">
                 <Multicolor text="Add Color"></Multicolor>
                 <Multicolor text="Confirm"></Multicolor>
             </LED_Color>
-            <LED_Color text="Rainbow Colors" disabled="true">
-                <Rainbow_Colors text="Offset"></Rainbow_Colors>
-                <Rainbow_Colors text="Scale"></Rainbow_Colors>
-                <Rainbow_Colors text="Timeshift"></Rainbow_Colors>
+            <LED_Color text="Rainbow Colors" index="Rainbow">
+                <Rainbow_Colors text="Offset" type="number" min="-500" max="500" step="5" setting="rainbow_offset"></Rainbow_Colors>
+                <Rainbow_Colors text="Scale" type="number" min="-500" max="500" step="5" setting="rainbow_scale"></Rainbow_Colors>
+                <Rainbow_Colors text="Timeshift" type="number" min="-100" max="100" step="1" setting="rainbow_timeshift"></Rainbow_Colors>
             </LED_Color>
-            <LED_Color text="Speed">
-                <Speed text="Color for slow speed" show="colorPicker">
-                    <Color_for_slow_speed text="Red"></Color_for_slow_speed>
-                    <Color_for_slow_speed text="Green"></Color_for_slow_speed>
-                    <Color_for_slow_speed text="Blue"></Color_for_slow_speed>
+            <LED_Color text="Speed" index="Speed">
+                <Speed text="Color for slow speed" show="colorPicker" color="settings">
+                    <Color_for_slow_speed text="Red" setting="speed_slowest_red"></Color_for_slow_speed>
+                    <Color_for_slow_speed text="Green" setting="speed_slowest_green"></Color_for_slow_speed>
+                    <Color_for_slow_speed text="Blue" setting="speed_slowest_blue"></Color_for_slow_speed>
                 </Speed>
-                <Speed text="Color for fast speed" show="colorPicker">
-                    <Color_for_fast_speed text="Red"></Color_for_fast_speed>
-                    <Color_for_fast_speed text="Green"></Color_for_fast_speed>
-                    <Color_for_fast_speed text="Blue"></Color_for_fast_speed>
+                <Speed text="Color for fast speed" show="colorPicker" color="settings">
+                    <Color_for_fast_speed text="Red" setting="speed_fastest_red"></Color_for_fast_speed>
+                    <Color_for_fast_speed text="Green" setting="speed_fastest_green"></Color_for_fast_speed>
+                    <Color_for_fast_speed text="Blue" setting="speed_fastest_blue"></Color_for_fast_speed>
                 </Speed>
                 <Speed text="Period">
-                    <Period text="Seconds" type="numberf" min="0.1" max="100" step="0.1"></Period>
+                    <Period text="Seconds" type="numberf" min="0.1" max="100" step="0.1" setting="speed_period_in_seconds"></Period>
                 </Speed>
                 <Speed text="Max notes in period">
-                    <Max_notes_in_period text="Notes" type="number" min="2" max="10000" step="2"></Max_notes_in_period>
+                    <Max_notes_in_period text="Notes" type="number" min="2" max="10000" step="2" setting="speed_max_notes"></Max_notes_in_period>
                 </Speed>
                 <Speed text="Confirm"></Speed>
             </LED_Color>
-            <LED_Color text="Scale Coloring" display="none"> <!-- TODO Not yet available on Board-->
-                <Scale_Coloring text="Color in scale">
-                    <Color_in_scale text="Red"></Color_in_scale>
-                    <Color_in_scale text="Green"></Color_in_scale>
-                    <Color_in_scale text="Blue"></Color_in_scale>
+            <LED_Color text="Scale Coloring" index="Scale">
+                <Scale_Coloring text="Color in scale" show="colorPicker" color="settings">
+                    <Color_in_scale text="Red" setting="key_in_scale_red"></Color_in_scale>
+                    <Color_in_scale text="Green" setting="key_in_scale_green"></Color_in_scale>
+                    <Color_in_scale text="Blue" setting="key_in_scale_blue"></Color_in_scale>
                 </Scale_Coloring>
-                <Scale_Coloring text="Color not in scale">
-                    <Color_not_in_scale text="Red"></Color_not_in_scale>
-                    <Color_not_in_scale text="Green"></Color_not_in_scale>
-                    <Color_not_in_scale text="Blue"></Color_not_in_scale>
+                <Scale_Coloring text="Color not in scale" show="colorPicker" color="settings">
+                    <Color_not_in_scale text="Red" setting="key_not_in_scale_red"></Color_not_in_scale>
+                    <Color_not_in_scale text="Green" setting="key_not_in_scale_green"></Color_not_in_scale>
+                    <Color_not_in_scale text="Blue" setting="key_not_in_scale_blue"></Color_not_in_scale>
                 </Scale_Coloring>
-                <Scale_Coloring text="Scale key">
+                <Scale_Coloring text="Scale key" setting="scale_key" stype="index">
                     <Scale_key text="C"></Scale_key>
                     <Scale_key text="C#"></Scale_key>
                     <Scale_key text="D"></Scale_key>
@@ -79,44 +79,44 @@
                 <Scale_Coloring text="Confirm"></Scale_Coloring>
             </LED_Color>
         </LED_Strip_Settings>
-        <LED_Strip_Settings text="Light mode">
-            <Light_mode text="Normal"></Light_mode>
-            <Light_mode text="Fading">
-                <Fading text="Instant"></Fading>
-                <Fading text="Very fast"></Fading>
-                <Fading text="Fast"></Fading>
-                <Fading text="Medium"></Fading>
-                <Fading text="Slow"></Fading>
-                <Fading text="Very slow"></Fading>
+        <LED_Strip_Settings text="Light mode" setting="mode" stype="sIndex">
+            <Light_mode text="Normal" index="Normal"></Light_mode>
+            <Light_mode text="Fading" index="Fading" setting="fadingspeed" stype="sIndex">
+                <Fading text="Instant" index="1000"></Fading>
+                <Fading text="Very fast" index="50"></Fading>
+                <Fading text="Fast" index="40"></Fading>
+                <Fading text="Medium" index="20"></Fading>
+                <Fading text="Slow" index="10"></Fading>
+                <Fading text="Very slow" index="2"></Fading>
             </Light_mode>
-            <Light_mode text="Velocity">
-                <Velocity text="Fast"></Velocity>
-                <Velocity text="Medium"></Velocity>
-                <Velocity text="Slow"></Velocity>
-                <Velocity text="Very slow"></Velocity>
+            <Light_mode text="Velocity" index="Velocity" setting="fadingspeed" stype="sIndex">
+                <Velocity text="Fast" index="10"></Velocity>
+                <Velocity text="Medium" index="8"></Velocity>
+                <Velocity text="Slow" index="6"></Velocity>
+                <Velocity text="Very slow" index="3"></Velocity>
             </Light_mode>
         </LED_Strip_Settings>
         <LED_Strip_Settings text="Brightness">
-            <Brightness text="Power" type="number" min="0" max="100"></Brightness>
+            <Brightness text="Power" type="number" min="0" max="100" setting="brightness_percent"></Brightness>
         </LED_Strip_Settings>
         <LED_Strip_Settings text="Backlight">
-            <Backlight text="Backlight Color" show="colorPicker">
-                <Backlight_Color text="Red"></Backlight_Color>
-                <Backlight_Color text="Green"></Backlight_Color>
-                <Backlight_Color text="Blue"></Backlight_Color>
+            <Backlight text="Backlight Color" show="colorPicker" color="settings">
+                <Backlight_Color text="Red" setting="backlight_red"></Backlight_Color>
+                <Backlight_Color text="Green" setting="backlight_green"></Backlight_Color>
+                <Backlight_Color text="Blue" setting="backlight_blue"></Backlight_Color>
             </Backlight>
             <Backlight text="Backlight Brightness">
-                <Backlight_Brightness text="Power" type="number" min="0" max="100"></Backlight_Brightness>
+                <Backlight_Brightness text="Power" type="number" min="0" max="100"  setting="backlight_brightness"></Backlight_Brightness>
             </Backlight>
         </LED_Strip_Settings>
-        <LED_Strip_Settings text="Sides Color">
-            <Sides_Color text="Custom RGB" show="colorPicker">
-                <Custom_RGB text="Red"></Custom_RGB>
-                <Custom_RGB text="Green"></Custom_RGB>
-                <Custom_RGB text="Blue"></Custom_RGB>
+        <LED_Strip_Settings text="Sides Color" setting="adjacent_mode" stype="sIndex">
+            <Sides_Color text="Custom RGB" show="colorPicker" color="settings" index="RGB">
+                <Custom_RGB text="Red" setting="adjacent_red"></Custom_RGB>
+                <Custom_RGB text="Green" setting="adjacent_green"></Custom_RGB>
+                <Custom_RGB text="Blue" setting="adjacent_blue"></Custom_RGB>
             </Sides_Color>
-            <Sides_Color text="Same as main"></Sides_Color>
-            <Sides_Color text="Off"></Sides_Color>
+            <Sides_Color text="Same as main" index="Main"></Sides_Color>
+            <Sides_Color text="Off" index="Off"></Sides_Color>
         </LED_Strip_Settings>
         <LED_Strip_Settings text="Sequences" disabled="true">
             <Sequences text="Update"></Sequences>
@@ -133,20 +133,20 @@
             <Shift text="Number"></Shift>
         </LED_Strip_Settings>
     </menu>
-    <menu text="Play MIDI">
+    <menu text="Play MIDI"> <!-- TODO isplaying, isrecording etc -->
         <Play_MIDI text="Choose song" action="request"></Play_MIDI>
         <Play_MIDI text="Stop playing"></Play_MIDI>
         <Play_MIDI text="Start recording"></Play_MIDI>
         <Play_MIDI text="Cancel recording"></Play_MIDI>
         <Play_MIDI text="Save MIDI"></Play_MIDI>
     </menu>
-    <menu text="Ports Settings">
+    <menu text="Ports Settings"> <!-- TODO highlight selected Port -->
         <Ports_Settings text="Input" action="request"></Ports_Settings>
         <Ports_Settings text="Playback" action="request"></Ports_Settings>
         <Ports_Settings text="Refresh ports"></Ports_Settings>
         <Ports_Settings text="Reset Bluetooth service"></Ports_Settings>
     </menu>
-    <menu text="LED animations">
+    <menu text="LED animations"> <!-- TODO highlight selected Animation -->
         <LED_animations text="Theater Chase"></LED_animations>
         <LED_animations text="Breathing">
             <Breathing text="Fast"></Breathing>
@@ -169,7 +169,7 @@
         <LED_animations text="Stop animation"></LED_animations>
         <LED_animations text="Clear"></LED_animations>
     </menu>
-    <menu text="Display Settings">
+    <menu text="Display Settings">  <!-- TODO all -->
         <Display_Settings text="Text Color">
             <Text_Color text="Black"></Text_Color>
             <Text_Color text="White"></Text_Color>
@@ -193,7 +193,7 @@
             <Background_Color text="Grey"></Background_Color>
         </Display_Settings>
     </menu>
-    <menu text="Other Settings">
+    <menu text="Other Settings">  <!-- TODO all -->
         <Other_Settings text="System Info" disabled="true"></Other_Settings>
         <Other_Settings text="Screensaver" disabled="true"> <!-- TODO Not yet available in App-->
             <Screensaver text="Content">

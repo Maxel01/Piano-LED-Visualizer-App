@@ -44,11 +44,6 @@ public class Connection implements Disposable {
             receiveThread = new Thread(read());
             receiveThread.start();
             return true;
-            /*socket.getOutputStream().write(new String("Hello World\n\r").getBytes());
-            System.out.println("Send message");
-            InputStream in;
-            BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            System.out.println("received: " + br.readLine());*/
         } catch (GdxRuntimeException e) {
             System.err.println("Failed to connect: " + host);
             socket = null;
@@ -60,6 +55,7 @@ public class Connection implements Disposable {
         if(!isConnected()) return;
         data += ";";
         try {
+            System.out.println("Send: " + data);
             socket.getOutputStream().write(data.getBytes());
             socket.getOutputStream().flush();
         } catch (IOException e) {
@@ -77,11 +73,11 @@ public class Connection implements Disposable {
                 while (!receiveThread.isInterrupted() && (line = br.readLine()) != null) {
                     if(!line.isEmpty())
                         messages.add(line);
-                    System.out.println("read something " + line);
                 }
                 disconnect();
                 br.close();
             } catch (IOException e) {
+                disconnect();
                 e.printStackTrace();
             }
         };
@@ -126,26 +122,23 @@ public class Connection implements Disposable {
             ExecutorService threads = Executors.newCachedThreadPool();
             ArrayList<InetAddress> addresses = new ArrayList<>();
             for (int i = 1; i <= 254; i++) {
-                final int j = i;  // i as non-final variable cannot be referenced from inner class
-                threads.execute(new Runnable() {   // new thread for parallel execution
+                final int j = i;
+                threads.execute(new Runnable() {
                     public void run() {
                         try {
                             ip[3] = (byte) j;
                             InetAddress address = InetAddress.getByAddress(ip);
                             String output = address.toString().substring(1);
                             if (address.isReachable(timeout)) {
-                                //System.out.println(output + " is on the network " + address.getHostName());
                                 synchronized (addresses) {
                                     addresses.add(address);
                                 }
-                            } else {
-                                //System.out.println("Not Reachable: "+output);
                             }
                         } catch (Exception e) {
                             // Not Reachable
                         }
                     }
-                });     // dont forget to start the thread
+                });
             }
             try {
                 threads.awaitTermination(timeout, TimeUnit.MILLISECONDS);

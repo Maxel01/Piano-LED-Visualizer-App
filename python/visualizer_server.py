@@ -29,16 +29,15 @@ class VisualizerServer:
         print(cmd)
         (action, location, choice) = str(cmd).split(".", 2)
         if action == "change_settings":
+            if location == "LED_Color":
+                loc = choice.replace(" ", "_")
+                self.menu.change_settings(location=loc, choice=choice)
             self.menu.change_settings(location=location, choice=choice)
         elif action == "change_value":
             (key, value) = str(choice).split("=")
-            #value = value.replace(",", ".")
             value = eval(value)
             if location == "RGB":
-                print("key:", key, ", value:", value)
-                value = self.manipulate_color(key, value, self.ledsettings) # TODO other approach get_color()
-                print("key:", key, ", value manipulated:", value)
-                print("before", self.ledsettings.get_colors())
+                value = value - self.ledsettings.get_color(key)
                 self.ledsettings.change_color(key, value)
                 self.ledsettings.color_mode = "Single"
                 self.usersettings.change_setting_value("color_mode", self.ledsettings.color_mode)
@@ -56,6 +55,12 @@ class VisualizerServer:
             elif location == "Custom_RGB":
                 value = value - self.ledsettings.get_adjacent_color(key)
                 self.ledsettings.change_adjacent_color(key, value)
+            elif location == "Color_in_scale":
+                self.ledsettings.key_in_scale[key.lower()] =  value
+                self.usersettings.change_setting_value("key_in_scale_" + key.lower(), value)
+            elif location == "Color_not_in_scale":
+                self.ledsettings.key_not_in_scale[key.lower()] =  value
+                self.usersettings.change_setting_value("key_not_in_scale_" + key.lower(), value)
             elif location == "Backlight_Brightness":
                 backlight_brightness = self.ledsettings.backlight_brightness_percent
                 value = value - backlight_brightness
@@ -74,16 +79,23 @@ class VisualizerServer:
             if location == "Ports_Settings":
                 if choice == "Input" or choice == "Playback":
                     ports = mido.get_input_names()
-                    message = location + "." + choice + "." + str(ports)
+                    message = location + "." + choice + "." + str(ports) + "\n"
                     print(message)
-                    socket.send(message.encode() + b"\n\r")
+                    socket.send(message.encode())
             elif location == "Play_MIDI":
                 if choice == "Choose song":
                     songs_list = os.listdir("Songs")
                     print(songs_list)
-                    message = location + "." + choice + "." + str(songs_list)
-                    print(message)
-                    socket.send(message.encode() + b"\n\r")
+                    message = location + "." + choice + "." + str(songs_list) + "\n"
+                    print(message, end="")
+                    socket.send(message.encode())
+            elif location == "Settings":
+                root = self.usersettings.root
+                if choice == "All":
+                    for child in root:
+                        message = location + "." + child.tag + "." + child.text + "\n"
+                        print(message, end="")
+                        socket.send(message.encode())
 
 
     def manipulate_color(self, key, value, attribute_holder):
@@ -118,7 +130,7 @@ class VisualizerServer:
         if mask & selectors.EVENT_WRITE:
             if data.outb:
                 #print('echoing', repr(data.outb), 'to', data.addr)
-                #sent = sock.send(data.outb + b"\n\r")  # Should be ready to write
+                #sent = sock.send(data.outb + b"\n")  # Should be ready to write
                 #data.outb = data.outb[sent:]
                 pass
 
@@ -144,6 +156,9 @@ class VisualizerServer:
                         self.service_connection(key, mask)
                 time.sleep(5)
             except KeyboardInterrupt:
+                self.server_socket.close()
+                print("Socket closed!")
+            except:
                 self.server_socket.close()
                 print("Socket closed!")
 

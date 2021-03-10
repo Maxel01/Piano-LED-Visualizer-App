@@ -57,10 +57,31 @@ public class Actions {
 
     public void send(XmlReader.Element element, String option, boolean goBack) {
         String data = option + "." + element.getName() + "." + element.get("text");
-        System.out.println("Send: " + data);
         core.connection.send(data);
+        Settings.update(element);
         if (goBack)
             core.setScreen(new MainMenuScreen(core, element.getParent().getName()));
+    }
+
+    public void sendNumber(XmlReader.Element element, int number) {
+        String data = CHANGE_VALUE + "." + element.getName() + "." + element.get("text") + "=" + number;
+        core.connection.send(data);
+        Settings.update(element, number);
+    }
+
+    public void sendNumber(XmlReader.Element element, float number) {
+        String data = CHANGE_VALUE + "." + element.getName() + "." + element.get("text") + "=" + number;
+        core.connection.send(data);
+        Settings.update(element, number);
+    }
+
+    public void request(XmlReader.Element element) {
+        request(element.getName(), element.get("text"));
+    }
+
+    public void request(String name, String text) {
+        String data = REQUEST + "." + name + "." + text;
+        core.connection.send(data);
     }
 
     public void show(XmlReader.Element element) throws InvocationTargetException, IllegalAccessException {
@@ -77,9 +98,9 @@ public class Actions {
                 System.out.println("new Color: " + newColor);
                 for (int i = 0; i < element.getChildCount(); i++) {
                     XmlReader.Element childElem = element.getChild(i);
-                    String oldText = childElem.get("text");
+                    String text = childElem.get("text");
                     float color = 0;
-                    switch (oldText) {
+                    switch (text) {
                         case "Red":
                             color = newColor.r;
                             break;
@@ -91,37 +112,13 @@ public class Actions {
                             break;
                     }
                     System.out.println(color);
-                    childElem.setAttribute("text", oldText + "=" + (int) (color * 255));
-                    send(childElem, CHANGE_VALUE);
-                    childElem.setAttribute("text", oldText);
+                    sendNumber(childElem, (int) (color * 255));
+                    core.setScreen(new MainMenuScreen(core, element.getName()));
                 }
-                //send(element, CHANGE_SETTINGS);
             }
         });
+        picker.setColor(Settings.getColor(element));
         picker.setAllowAlphaEdit(false);
         screen.stage.addActor(picker.fadeIn());
-    }
-
-    public void sendNumber(XmlReader.Element element, int number) {
-        String oldText = element.get("text");
-        element.setAttribute("text", oldText + "=" + number);
-        String data = CHANGE_VALUE + "." + element.getName() + "." + element.get("text");
-        core.connection.send(data); // Do not return to previous menu
-        element.setAttribute("text", oldText);
-    }
-
-    public void sendNumber(XmlReader.Element element, float number) {
-        String formattedNumber = (number + "");//.replace(".", ",");
-        String oldText = element.get("text");
-        element.setAttribute("text", oldText + "=" + formattedNumber);
-        String data = CHANGE_VALUE + "." + element.getName() + "." + element.get("text");
-        core.connection.send(data); // Do not return to previous menu
-        element.setAttribute("text", oldText);
-    }
-
-    public void request(XmlReader.Element element) {
-        String data = REQUEST + "." + element.getName() + "." + element.get("text");
-        System.out.println("Send: " + data);
-        core.connection.send(data);
     }
 }

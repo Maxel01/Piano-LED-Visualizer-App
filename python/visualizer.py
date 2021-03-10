@@ -1012,6 +1012,7 @@ class MenuLCD:
                 fastColorWipe(ledstrip.strip, True)
 
         if(location == "Solid"):
+            print("Color:", wc.name_to_rgb(choice))
             ledsettings.change_color_name(wc.name_to_rgb(choice))
             ledsettings.color_mode = "Single"
             usersettings.change_setting_value("color_mode", ledsettings.color_mode)
