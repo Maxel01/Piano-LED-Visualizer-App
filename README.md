@@ -16,3 +16,7 @@ add "server = visualizer_server.VisualizerServer(menu, usersettings, ledsettings
 # Install the App on your Android phone
 make sure you are connected to the same wifi as the raspi<br>
 select your raspi and enjoy
+
+# Issues
+At the moment, the app is in test mode.<br>
+So please report every issue or bug to help improve the app.
