@@ -19,4 +19,5 @@ select your raspi and enjoy
 
 # Issues
 At the moment, the app is in test mode.<br>
-So please report every issue or bug to help improve the app.
+So please report every issue or bug to help improve the app.<br>
+I am also happy to get new feature ideas!
